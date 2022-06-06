@@ -17,29 +17,7 @@ const initialState = {
 export const shopSlice = createSlice({
   name: 'shopSlice',
   initialState: shopAdapter.getInitialState(initialState),
-  reducers: {
-    // setSearchValue: (state, action) => {
-    //   state.search_value = action.payload
-    // }
-    // setProducts: (state, action) => {
-    //   state.products = action.payload
-    // },
-    // setCategories: (state, action) => {
-    //   state.categories = action.payload
-    // },
-    // setTopSales: (state, action) => {
-    //   state.top_sales = action.payload
-    // },
-    // updateProducts: (state, action) => {
-    //   state.products = action.payload
-    // },
-    // uploadProducts: (state, action) => {
-    //   state.products = action.payload
-    // },
-    // searchProducts: (state, action) => {
-    //   state.products = action.payload
-    // }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Вызывается прямо перед выполнением запроса
@@ -94,6 +72,7 @@ export const shopSlice = createSlice({
         state.error = null;
       })
       .addCase(shopService.searchProducts.fulfilled, (state, action) => {
+        state.search_value = action.meta.arg;
         state.products = action.payload;
         state.loading = 'idle';
         state.error = null;
@@ -126,6 +105,6 @@ export const shopSlice = createSlice({
   },
 })
 
-export const { setProducts, setCategories, setTopSales, updateProducts, uploadProducts, setSearchValue } = shopSlice.actions
+export const { setProducts, setCategories, setTopSales, updateProducts, uploadProducts, searchProducts } = shopSlice.actions
 
 export default shopSlice.reducer

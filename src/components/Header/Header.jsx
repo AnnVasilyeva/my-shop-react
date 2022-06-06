@@ -1,24 +1,37 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import ShopService from "../../service";
 import './header.css';
 
 const shopService = new ShopService(); 
 
 export default function Header () {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState()
 
   const changeSearch = () => {
     if(!isSearchOpen) {
       setIsSearchOpen(true);
-    } else if (!searchValue) {
+    } else if (isSearchOpen && !searchValue) {
       setIsSearchOpen(false);
-    } else return
+    } else {
+      dispatch(shopService.searchProducts(searchValue));
+      navigate('/catalog')
+    }
   }
-
-  const handleChange = event => {
-    setSearchValue(event.target.value);
+ 
+  
+  const handleSubmit = (e) => {
+   e.preventDefault()
+   if(searchValue) {
+    dispatch(shopService.searchProducts(searchValue));
+    navigate('/catalog')
+    
+   } else setIsSearchOpen(false);
+   
   }
 
   return (
@@ -44,16 +57,10 @@ export default function Header () {
               </ul>
               <div>
                 <div className="header-controls-pics">
-                  {
-                    (isSearchOpen && searchValue) ?
-                    <Link to="/catalog">
-                     <button type="button" data-id="search-expander" className="header-controls-pic header-controls-search"></button>
-                    </Link> :
-                    <button type="button" data-id="search-expander" className="header-controls-pic header-controls-search"
-                    onClick={() => changeSearch()}>
-                    </button>
-                  }
-                 
+                  <button type="button" data-id="search-expander" className="header-controls-pic header-controls-search"
+                  onClick={() => changeSearch()}>
+                  </button>
+                  
                   <button type="button" className="header-controls-pic header-controls-cart">
                     <div className="header-controls-cart-full">1</div>
                     <div className="header-controls-cart-menu"></div>
@@ -61,11 +68,14 @@ export default function Header () {
                 </div>
                 {
                   isSearchOpen &&
-                  <form data-id="search-form"     className="header-controls-search-form form-inline">
+                  
+                  <form data-id="search-form"     className="header-controls-search-form form-inline" onSubmit={handleSubmit}>
                     <input
-                    type='text' className="form-control"     placeholder="Поиск"
-                    value={searchValue}
-                    onChange={handleChange}
+                    type='text' 
+                    name="searchValue"
+                    className="form-control"     placeholder="Поиск"
+                    value={searchValue ?? ''}
+                    onChange={(event) => setSearchValue(event.target.value)}
                     />
                   </form>
                 }

@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import './main.css';
 
 export default function Main () {
+  
   return (
     <main className="container">
       <div className="row">

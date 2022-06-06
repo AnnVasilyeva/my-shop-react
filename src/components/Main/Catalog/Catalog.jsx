@@ -12,6 +12,7 @@ export default function Catalog ({isCatalogPage = true}) {
 
   const categories = useSelector((state) => state.shopSlice.categories);
   const products = useSelector((state) => state.shopSlice.products);
+  // const searchValue = useSelector((state) => state.shopSlice.search_value);
 
   const [activeCategory, setActiveCategory] = useState(11);
   
