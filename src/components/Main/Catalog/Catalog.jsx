@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import ProductCard from '../ProductCard/ProductCard';
 import { useDispatch } from 'react-redux';
@@ -12,9 +12,14 @@ export default function Catalog ({isCatalogPage = true}) {
 
   const categories = useSelector((state) => state.shopSlice.categories);
   const products = useSelector((state) => state.shopSlice.products);
-  // const searchValue = useSelector((state) => state.shopSlice.search_value);
+  const searchValue = useSelector((state) => state.shopSlice.search_value);
 
   const [activeCategory, setActiveCategory] = useState(11);
+  const [catalogSearch, setCatalogSearch] = useState()
+
+  useEffect(() => {
+    setCatalogSearch(searchValue)
+  }, [searchValue])
   
   const changeCategory = (id) => {
     setActiveCategory(id);
@@ -29,13 +34,27 @@ export default function Catalog ({isCatalogPage = true}) {
     dispatch(shopService.uploadProducts(activeCategory));
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if(catalogSearch) {
+     dispatch(shopService.searchProducts(catalogSearch));
+    }
+  }
+ 
+
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
       {
         !isCatalogPage && 
-        <form className="catalog-search-form form-inline">
-      <input className="form-control" placeholder="Поиск"/>
+        <form className="catalog-search-form form-inline" onSubmit={handleSubmit}>
+          <input
+            type='text' 
+            name="searchValue"
+            className="form-control"     placeholder="Поиск"
+            value={catalogSearch ?? ''}
+            onChange={(event) => setCatalogSearch(event.target.value)}
+          />
     </form>
       }
     

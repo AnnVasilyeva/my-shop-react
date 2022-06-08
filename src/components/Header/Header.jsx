@@ -19,6 +19,7 @@ export default function Header () {
       setIsSearchOpen(false);
     } else {
       dispatch(shopService.searchProducts(searchValue));
+      setIsSearchOpen(false);
       navigate('/catalog')
     }
   }
@@ -28,7 +29,8 @@ export default function Header () {
    e.preventDefault()
    if(searchValue) {
     dispatch(shopService.searchProducts(searchValue));
-    navigate('/catalog')
+    setIsSearchOpen(false);
+    navigate('/catalog');
     
    } else setIsSearchOpen(false);
    

@@ -11,7 +11,7 @@ const initialState = {
   top_sales: [],
   loading: 'idle', 
   error: null,
-  search_value: null
+  search_value: ''
 }
 
 export const shopSlice = createSlice({
