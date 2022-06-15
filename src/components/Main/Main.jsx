@@ -3,6 +3,8 @@ import MainPage from './MainPage/MainPage';
 import Catalog from './Catalog/Catalog';
 import About from './About/About';
 import Contacts from './Contacts/Contacts';
+import ProductPage from './ProductPage/ProductPage';
+import CartPage from './Cart/Cart';
 import { Routes, Route } from "react-router-dom";
 import './main.css';
 
@@ -23,11 +25,17 @@ export default function Main () {
           <Route path="/catalog"
                   element={<Catalog isCatalogPage={false}/>}
           />
+          <Route path="/catalog/:id"
+                element={<ProductPage/>}
+          />
           <Route path="/about"
                   element={<About/>}
           />
            <Route path="/contacts"
                   element={<Contacts/>}
+          />
+           <Route path="/cart"
+                element={<CartPage/>}
           />
         </Routes>
         </div>

@@ -11,13 +11,19 @@ const initialState = {
   top_sales: [],
   loading: 'idle', 
   error: null,
-  search_value: ''
+  search_value: '',
+  selected_product: null,
+  cart: []
 }
 
 export const shopSlice = createSlice({
   name: 'shopSlice',
   initialState: shopAdapter.getInitialState(initialState),
-  reducers: {},
+  reducers: {
+    addToCart: (state, action) => {
+      state.cart = [...state.cart, ...action.payload]
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Вызывается прямо перед выполнением запроса
@@ -42,6 +48,10 @@ export const shopSlice = createSlice({
         state.error = null;
       })
       .addCase(shopService.searchProducts.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(shopService.selectProduct.pending, (state) => {
         state.loading = 'loading';
         state.error = null;
       })
@@ -77,6 +87,11 @@ export const shopSlice = createSlice({
         state.loading = 'idle';
         state.error = null;
       })
+      .addCase(shopService.selectProduct.fulfilled, (state, action) => {
+        state.selected_product = action.payload;
+        state.loading = 'idle';
+        state.error = null;
+      })
       // Вызывается в случае ошибки
       .addCase(shopService.fetchCategories.rejected, (state, action) => {
         state.loading = 'failed';
@@ -101,7 +116,12 @@ export const shopSlice = createSlice({
       .addCase(shopService.searchProducts.rejected, (state, action) => {
         state.loading = 'failed';
         state.error = action.error;
+      })
+      .addCase(shopService.selectProduct.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.error;
       });
+
   },
 })
 

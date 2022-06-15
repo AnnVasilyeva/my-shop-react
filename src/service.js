@@ -89,4 +89,19 @@ export default class ShopService {
       return await res.json();
     }
   )
+
+  selectProduct = createAsyncThunk(
+    'shopSlice/selectProduct',
+    async (id) => {
+      const res = await fetch(`${this._apiBase}api/items/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
+      });
+      return await res.json();
+    }
+  )
+
 }

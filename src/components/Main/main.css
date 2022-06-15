@@ -52,6 +52,9 @@
 .catalog-item-size {
   display: inline-block;
   padding: 0 10px;
+  border: none;
+  background-color: transparent;
+  margin-left: 5px;
 }
 
 .catalog-item-size.selected {
@@ -77,4 +80,9 @@
   border: none;
   outline: none;
   box-shadow: none;
+}
+
+.order .card {
+  max-width: 30rem;
+  margin: 0 auto;
 }
