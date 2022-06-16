@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Link , useNavigate} from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ShopService from "../../service";
 import './header.css';
 
@@ -9,6 +9,7 @@ const shopService = new ShopService();
 export default function Header () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.shopSlice.cart)
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState()
 
@@ -64,8 +65,13 @@ export default function Header () {
                   </button>
                   
                   <button type="button" className="header-controls-pic header-controls-cart">
-                    <div className="header-controls-cart-full">1</div>
+                    {cart && cart.length > 0 &&
+                    <>
+                     <div className="header-controls-cart-full">{cart.length}</div>
                     <div className="header-controls-cart-menu"></div>
+                    </>
+                    }
+                    
                   </button>
                 </div>
                 {
