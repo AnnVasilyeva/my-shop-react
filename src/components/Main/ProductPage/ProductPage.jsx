@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 
@@ -8,6 +8,15 @@ export default function ProductPage () {
   const product = useSelector((state) => state.shopSlice.selected_product);
   const [selectedSize, setSelectedSize] = useState(null);
   const [count, setCount] = useState(1);
+  const [isAvalible, setIsAvailable] = useState(false)
+
+  useEffect(() => {
+    const avalible = product.sizes.find(item => item.avalible === true);
+    if(avalible !== undefined) {
+      setIsAvailable(true)
+    }
+  }, [product])
+
 
   const selectSize = (i) => {
     i === selectedSize ? setSelectedSize(null) :
@@ -69,27 +78,38 @@ export default function ProductPage () {
             </table>
             <div className="text-center">
                 <p>Размеры в наличии: 
-                  {product.sizes.map((item, index) => 
-                    item.avalible &&  
-                   <button type='button' key={index} onClick={() => selectSize(index)} className={`catalog-item-size ${selectedSize === index && 'selected'}`}>{item.size}</button>
+                  {product.sizes.map((item, index) => {
+                    if(item.avalible) {
+                      return (
+                        <button type='button' key={index} onClick={() => selectSize(index)} className={`catalog-item-size ${selectedSize === index && 'selected'}`}>{item.size}</button>
+                      )
+                    }
+                    return null
+                  }
+                   
                   )}
                  </p>
-                <p>Количество: <span className="btn-group btn-group-sm pl-2">
-                <button 
-                className="btn btn-secondary"
-                onClick={() => dec()}
-                >-</button>
-                <span className="btn btn-outline-primary">{count}</span>
-                <button 
-                className="btn btn-secondary"
-                onClick={() => inc()}
-                >+</button>
-                </span>
-                </p>
+                 {isAvalible &&
+                 <p>Количество: <span className="btn-group btn-group-sm pl-2">
+                 <button 
+                 className="btn btn-secondary"
+                 onClick={() => dec()}
+                 >-</button>
+                 <span className="btn btn-outline-primary">{count}</span>
+                 <button 
+                 className="btn btn-secondary"
+                 onClick={() => inc()}
+                 >+</button>
+                 </span>
+                 </p>
+                 }
             </div>
-              <button className={`btn btn-block btn-lg ${selectedSize != null ? 'btn-danger' : 'btn-secondary'}`}
-              onClick={() => redirectToCart()}
-              >В корзину</button>
+            {isAvalible &&
+             <button className={`btn btn-block btn-lg ${selectedSize != null ? 'btn-danger' : 'btn-secondary'}`}
+             onClick={() => redirectToCart()}
+             >В корзину</button> 
+            }
+             
           </div>
       </div>
     </>
