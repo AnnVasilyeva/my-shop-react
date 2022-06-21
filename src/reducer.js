@@ -13,7 +13,7 @@ const initialState = {
   error: null,
   search_value: '',
   selected_product: null,
-  cart: []
+  cart: [],
 }
 
 export const shopSlice = createSlice({
@@ -21,8 +21,11 @@ export const shopSlice = createSlice({
   initialState: shopAdapter.getInitialState(initialState),
   reducers: {
     addToCart: (state, action) => {
-      state.cart = [...state.cart, ...action.payload]
-    }
+      state.cart.push(action.payload);
+    },
+    deleteProduct: (state,action) => {
+      state.cart = state.cart.filter(item => item.id !== action.payload.id);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -125,6 +128,6 @@ export const shopSlice = createSlice({
   },
 })
 
-export const { setProducts, setCategories, setTopSales, updateProducts, uploadProducts, searchProducts } = shopSlice.actions
+export const { addToCart, deleteProduct, updateProducts, uploadProducts, searchProducts, selectProduct } = shopSlice.actions
 
 export default shopSlice.reducer

@@ -1,8 +1,9 @@
 import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function CartPage () {
-  // const cart = useSelector((state) => state.shopSlice.cart);
+  const cart = useSelector((state) => state.shopSlice.cart);
+  console.log(cart)
 
   return (
     <>

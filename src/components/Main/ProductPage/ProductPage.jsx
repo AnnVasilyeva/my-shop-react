@@ -1,17 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import Loader from '../../Loader/Loader';
+import { addToCart } from '../../../reducer';
 
 export default function ProductPage () {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const product = useSelector((state) => state.shopSlice.selected_product);
   const loading = useSelector((state) => state.shopSlice.loading);
   const [selectedSize, setSelectedSize] = useState(null);
   const [count, setCount] = useState(1);
   const [isAvalible, setIsAvailable] = useState(false)
-
   
   useEffect(() => {
     if(loading === 'idle' && product) {
@@ -39,6 +40,14 @@ export default function ProductPage () {
   }
 
   const redirectToCart = () => {
+    const item = {
+      id: product.id,
+      title: product.title,
+      size: product.sizes[selectedSize],
+      price: product.price * count,
+      count: count
+    }
+    dispatch(addToCart(item)); 
     navigate('/cart')
   }
 
