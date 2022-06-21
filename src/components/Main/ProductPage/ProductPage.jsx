@@ -1,21 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import {useNavigate} from "react-router-dom";
+import Loader from '../../Loader/Loader';
 
 export default function ProductPage () {
   const navigate = useNavigate();
 
   const product = useSelector((state) => state.shopSlice.selected_product);
+  const loading = useSelector((state) => state.shopSlice.loading);
   const [selectedSize, setSelectedSize] = useState(null);
   const [count, setCount] = useState(1);
   const [isAvalible, setIsAvailable] = useState(false)
 
+  
   useEffect(() => {
-    const avalible = product.sizes.find(item => item.avalible === true);
-    if(avalible !== undefined) {
-      setIsAvailable(true)
+    if(loading === 'idle' && product) {
+      const avalible = product.sizes.find(item => item.avalible === true);
+      if(avalible !== undefined) {
+        setIsAvailable(true)
+      }
     }
-  }, [product])
+  }, [product, loading])
 
 
   const selectSize = (i) => {
@@ -39,7 +44,10 @@ export default function ProductPage () {
 
   return(
     <section className="catalog-item">
-    {product && 
+    {loading === 'loading' &&
+      <Loader/>
+    }
+    {product && loading === 'idle' &&
       <>
      <h2 className="text-center">{product.title}</h2>
       <div className="row">
@@ -105,9 +113,12 @@ export default function ProductPage () {
                  }
             </div>
             {isAvalible &&
+            <div className="d-grid gap-2">
              <button className={`btn btn-block btn-lg ${selectedSize != null ? 'btn-danger' : 'btn-secondary'}`}
+             disabled={selectedSize === null}
              onClick={() => redirectToCart()}
-             >В корзину</button> 
+             >В корзину</button>
+             </div> 
             }
              
           </div>

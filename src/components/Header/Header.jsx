@@ -9,9 +9,9 @@ const shopService = new ShopService();
 export default function Header () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.shopSlice.cart)
+  const cart = useSelector((state) => state.shopSlice.cart);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState()
+  const [searchValue, setSearchValue] = useState();
 
   const changeSearch = () => {
     if(!isSearchOpen) {
@@ -64,14 +64,14 @@ export default function Header () {
                   onClick={() => changeSearch()}>
                   </button>
                   
-                  <button type="button" className="header-controls-pic header-controls-cart">
+                  <button type="button" className="header-controls-pic header-controls-cart"
+                  onClick={()=> {if(cart.length > 0) navigate('/cart')}}>
                     {cart && cart.length > 0 &&
                     <>
                      <div className="header-controls-cart-full">{cart.length}</div>
                     <div className="header-controls-cart-menu"></div>
                     </>
                     }
-                    
                   </button>
                 </div>
                 {

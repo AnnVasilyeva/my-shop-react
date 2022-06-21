@@ -1,4 +1,9 @@
+import React from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+
 export default function CartPage () {
+  // const cart = useSelector((state) => state.shopSlice.cart);
+
   return (
     <>
     <section className="cart">
@@ -48,7 +53,8 @@ export default function CartPage () {
                   <input type="checkbox" className="form-check-input" id="agreement"/>
                   <label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
                 </div>
-                <button type="submit" className="btn btn-outline-secondary">Оформить</button>
+                
+                 <button type="submit" className="btn btn-outline-secondary">Оформить</button>
               </form>
             </div>
           </section>
