@@ -13,20 +13,12 @@ const initialState = {
   error: null,
   search_value: '',
   selected_product: null,
-  cart: [],
 }
 
-export const shopSlice = createSlice({
+const shopSlice = createSlice({
   name: 'shopSlice',
   initialState: shopAdapter.getInitialState(initialState),
-  reducers: {
-    addToCart: (state, action) => {
-      state.cart.push(action.payload);
-    },
-    deleteProduct: (state,action) => {
-      state.cart = state.cart.filter(item => item.id !== action.payload.id);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Вызывается прямо перед выполнением запроса
@@ -128,6 +120,7 @@ export const shopSlice = createSlice({
   },
 })
 
-export const { addToCart, deleteProduct, updateProducts, uploadProducts, searchProducts, selectProduct } = shopSlice.actions
+export const {updateProducts, uploadProducts, searchProducts, selectProduct } = shopSlice.actions
+
 
 export default shopSlice.reducer

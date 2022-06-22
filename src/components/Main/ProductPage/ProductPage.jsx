@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import Loader from '../../Loader/Loader';
-import { addToCart } from '../../../reducer';
+import { addToCart } from '../../../cartReducer';
 
 export default function ProductPage () {
   const navigate = useNavigate();
@@ -43,8 +43,9 @@ export default function ProductPage () {
     const item = {
       id: product.id,
       title: product.title,
-      size: product.sizes[selectedSize],
-      price: product.price * count,
+      size: product.sizes[selectedSize].size,
+      price: product.price,
+      total_price: product.price * count,
       count: count
     }
     dispatch(addToCart(item)); 
