@@ -9,7 +9,8 @@ const shopService = new ShopService();
 export default function Header () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.shopSlice.cart);
+
+  const cart = useSelector((state) => state.cartMaker.cart);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState();
 

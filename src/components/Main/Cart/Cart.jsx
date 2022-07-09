@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteProduct } from '../../../cartReducer';
+import OrderForm from '../../Forms/OrderForm';
+import Loader from '../../Loader/Loader'
 
 export default function CartPage () {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cartMaker.cart);
-  console.log(cart)
+  const error = useSelector((state) => state.cartMaker.error);
+  const loading = useSelector((state) => state.cartMaker.loading);
+  const cart_posted = useSelector((state) => state.cartMaker.cart_posted);
+  const [sum, setSum] = useState()
+
+  useEffect(() => {
+    if(cart && cart.length > 0) {
+     setSum(cart.reduce((sum, current) => sum + current.total_price, 0))
+    }
+  }, [cart])
 
   const removeProduct = (product) => {
     dispatch(deleteProduct(product))
@@ -15,7 +26,7 @@ export default function CartPage () {
     <>
     <section className="cart">
             <h2 className="text-center">Корзина</h2>
-
+            {cart_posted && <h2 className="text-center">Ваш заказ оформлен, ожидайте звонок от менеджера</h2>}
     {cart.length > 0 &&
       <>
       <table className="table table-bordered">
@@ -48,10 +59,9 @@ export default function CartPage () {
                   </tr>
                   )
                 })}
-               
                 <tr>
                   <td colSpan="5" className="text-end">Общая стоимость</td>
-                  <td>34 000 руб.</td>
+                  <td>{`${sum} руб.`}</td>
                 </tr>
               </tbody>
             </table>
@@ -62,23 +72,10 @@ export default function CartPage () {
             cart.length > 0 &&
             <section className="order">
             <h2 className="text-center">Оформить заказ</h2>
+            {error && <p className="text-center">{error}</p>}
+            {loading === 'loading' && <Loader/>}
             <div className="card">
-              <form className="card-body">
-                <div className="form-group">
-                  <label htmlFor="phone">Телефон</label>
-                  <input className="form-control" id="phone" placeholder="Ваш телефон"/>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="address">Адрес доставки</label>
-                  <input className="form-control" id="address" placeholder="Адрес доставки"/>
-                </div>
-                <div className="form-group form-check">
-                  <input type="checkbox" className="form-check-input" id="agreement"/>
-                  <label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
-                </div>
-                
-                 <button type="submit" className="btn btn-outline-secondary">Оформить</button>
-              </form>
+             <OrderForm/>
             </div>
           </section>
           }

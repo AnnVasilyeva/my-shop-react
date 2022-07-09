@@ -87,6 +87,7 @@ const shopSlice = createSlice({
         state.loading = 'idle';
         state.error = null;
       })
+      
       // Вызывается в случае ошибки
       .addCase(shopService.fetchCategories.rejected, (state, action) => {
         state.loading = 'failed';
@@ -116,7 +117,6 @@ const shopSlice = createSlice({
         state.loading = 'failed';
         state.error = action.error;
       });
-
   },
 })
 

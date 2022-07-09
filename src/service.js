@@ -104,4 +104,28 @@ export default class ShopService {
     }
   )
 
+  postCart = createAsyncThunk(
+    'cartMaker/postCart',
+    async (post, {rejectWithValue}) => {
+      try{
+        await fetch(
+          `${this._apiBase}api/order`,
+          {
+            mode: 'no-cors',
+            method: 'POST',
+            body: JSON.stringify(post),
+            header: {
+              'Content-Type': 'application/json',
+            },
+          }
+        ).then((res) => res)
+        
+      } catch (err) {
+        return rejectWithValue(err.message)
+      }
+        
+        
+    }
+  )
+
 }
